@@ -1,0 +1,24 @@
+{
+  "typescript": true,
+  "commands": [
+    "./commands"
+  ],
+  "exceptionHandlerNamespace": "App/Exceptions/Handler",
+  "aliases": {
+    "App": "app",
+    "Contracts": "contracts",
+    "Config": "config"
+  },
+  "preloads": [
+    "./start/routes",
+    "./start/kernel"
+  ],
+  "metaFiles": [
+    ".env",
+    ".adonisrc.json",
+    ".gitignore"
+  ],
+  "providers": [
+    "@adonisjs/core"
+  ]
+}
