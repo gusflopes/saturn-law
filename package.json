@@ -1,8 +1,12 @@
 {
-  "name": "saturn-law",
+  "name": "saturnlaw",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:gusflopes/saturn-law.git",
   "author": "gusflopes <gusflopes86@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*", "shared"
+  ]
 }
