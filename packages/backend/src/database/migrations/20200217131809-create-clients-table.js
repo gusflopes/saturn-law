@@ -20,9 +20,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       lawyer_id: {
+        foreignKey: true,
         type: Sequelize.UUID,
         allowNull: false,
-        references: { model: 'lawfirm_users', key: 'user_id' },
+        references: { model: 'users', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
