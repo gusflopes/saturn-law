@@ -1,11 +1,16 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('lawfirm_users', {
+    return queryInterface.createTable('LawfirmUsers', {
       id: {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4,
+      },
+      membership: {
+        type: Sequelize.ENUM('owner', 'member'),
+        allowNull: false,
+        defaultValue: 'member',
       },
       user_id: {
         type: Sequelize.UUID,

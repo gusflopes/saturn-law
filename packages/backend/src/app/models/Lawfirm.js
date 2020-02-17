@@ -34,8 +34,8 @@ class Lawfirm extends Model {
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'owner_id', as: 'owner' });
     this.belongsToMany(models.User, {
-      as: 'lawfirm',
-      through: 'lawfirm_users',
+      as: 'users',
+      through: 'LawfirmUsers',
       foreignKey: 'lawfirm_id',
     });
   }
