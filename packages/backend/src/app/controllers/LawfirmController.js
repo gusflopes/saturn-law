@@ -47,6 +47,14 @@ class LawfirmController {
       console.log('Create new Lawfirm');
       const lawfirm = await Lawfirm.create({ name, owner_id: userId });
 
+      console.log(lawfirm);
+      const users = await lawfirm.getUsers();
+      console.log('------------ USERS -----------');
+      console.log(users);
+      console.log('------------ NEW USER -----------');
+      const userToAdd = await User.findByPk(userId);
+      const newUser = await lawfirm.addUser(userToAdd);
+      console.log(newUser);
       // criar a associação LawfirmUsers
 
       return res.status(201).json(lawfirm);
