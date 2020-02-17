@@ -25,6 +25,9 @@ class User extends Model {
       if (user.password) {
         user.password_hash = await bcrypt.hash(user.password, 8);
       }
+      if (user.email) {
+        user.email = await user.email.toLowerCase();
+      }
     });
 
     return this;
