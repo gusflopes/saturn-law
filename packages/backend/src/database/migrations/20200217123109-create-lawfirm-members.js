@@ -1,5 +1,3 @@
-const uuid = require('uuid/v4');
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('lawfirm_users', {
@@ -7,7 +5,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: uuid(),
+        defaultValue: Sequelize.UUIDV4,
       },
       user_id: {
         type: Sequelize.UUID,

@@ -4,6 +4,12 @@ class Lawfirm extends Model {
   static init(sequelize) {
     super.init(
       {
+        id: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          allowNull: false,
+          primaryKey: true,
+        },
         name: Sequelize.STRING,
       },
       {

@@ -1,10 +1,16 @@
-import Sequelize, { Model } from 'sequelize';
+import Sequelize, { Model, DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 
 class User extends Model {
   static init(sequelize) {
     super.init(
       {
+        id: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          allowNull: false,
+          primaryKey: true,
+        },
         name: Sequelize.STRING,
         email: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
@@ -33,6 +39,14 @@ class User extends Model {
   }
 
   // Methods
+  isValidPassword(newPassword) {
+    try {
+      return bcrypt.compare(newPassword, this.password_hash);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
   }
