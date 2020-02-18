@@ -3,4 +3,4 @@ import LawfirmMemberController from '../app/controllers/LawfirmMemberController'
 
 module.exports = Router({ mergeParams: true })
   .get('/', LawfirmMemberController.listLawfirmMembers)
-  .post('/', LawfirmMemberController.store);
+  .post('/', LawfirmMemberController.newUser);

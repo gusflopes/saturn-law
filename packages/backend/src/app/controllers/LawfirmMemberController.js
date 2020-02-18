@@ -3,6 +3,43 @@ import Lawfirm from '../models/Lawfirm';
 import User from '../models/User';
 
 class LawfirmController {
+  async newUser(req, res) {
+    const { userId, lawfirmId } = req.query;
+    const { name, email, password } = req.body;
+
+    const isUserMember = await Lawfirm.findByPk(lawfirmId, {
+      include: [
+        {
+          model: User,
+          as: 'users',
+          attributes: ['id', 'name', 'email'],
+          where: { email: email.toLowerCase() },
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    if (isUserMember) {
+      return res.status(401).json(isUserMember);
+    }
+    const lawfirm = await Lawfirm.findByPk(lawfirmId);
+    console.log('########## LAWFIRM #########');
+    console.log(lawfirm);
+
+    const userExists = await User.findOne({
+      where: { email },
+    });
+    if (!userExists) {
+      // resolver se password estiver vazio
+      const user = await User.create({ name, email, password });
+      const newUser = await lawfirm.addUser(user);
+      return res.status(201).json(newUser);
+    }
+
+    const newUser = await lawfirm.addUser(userExists);
+    return res.status(201).json(newUser);
+  }
+
   async store(req, res) {
     const { userId, lawfirmId } = req.query;
     const { name, email, password } = req.body;

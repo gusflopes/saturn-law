@@ -22,8 +22,8 @@ class Lawfirm extends Model {
 
   // static associate
   static associate(models) {
-    this.belongsTo(models.Lawfirm, { as: 'lawfirm', foreignKey: 'id' });
-    this.belongsTo(models.User, { as: 'lawyer', foreignKey: 'id' });
+    this.belongsTo(models.Lawfirm, { as: 'lawfirm', foreignKey: 'lawfirm_id' });
+    this.belongsTo(models.User, { as: 'lawyer', foreignKey: 'lawyer_id' });
   }
 
   // methods

@@ -6,7 +6,15 @@ class LawfirmController {
   async index(req, res) {
     try {
       const lawfirms = await Lawfirm.findAll({
-        include: [{ model: User, as: 'owner', attributes: ['name', 'email'] }],
+        include: [
+          { model: User, as: 'owner', attributes: ['name', 'email'] },
+          {
+            model: User,
+            as: 'users',
+            attributes: ['id', 'name', 'email'],
+            through: { attributes: [] },
+          },
+        ],
       });
       return res.status(200).json(lawfirms);
     } catch (err) {
@@ -21,22 +29,26 @@ class LawfirmController {
     try {
       const lawfirms = await Lawfirm.findAll({
         where: { owner_id: userId },
-        /*
         include: [
           {
-            model: Lawfirm,
-            through: {
-              as: 'owner',
-              attributes: ['name', 'email'],
-            },
+            model: User,
+            as: 'owner',
+            attributes: ['name', 'email'],
+          },
+          {
+            model: User,
+            as: 'users',
+            attributes: ['id', 'name', 'email'],
+            through: { attributes: [] },
           },
         ],
-        */
       });
       return res.status(200).json(lawfirms);
     } catch (err) {
       console.log(err);
-      return res.status(501).json({ error: 'Erro na requisição.' });
+      return res
+        .status(501)
+        .json({ message: 'Erro na requisição.', error: err });
     }
   }
 
@@ -48,9 +60,8 @@ class LawfirmController {
       const lawfirm = await Lawfirm.create({ name, owner_id: userId });
 
       console.log(lawfirm);
-      const users = await lawfirm.getUsers();
+      // const users = await lawfirm.getUsers();
       console.log('------------ USERS -----------');
-      console.log(users);
       console.log('------------ NEW USER -----------');
       const userToAdd = await User.findByPk(userId);
       const newUser = await lawfirm.addUser(userToAdd);
