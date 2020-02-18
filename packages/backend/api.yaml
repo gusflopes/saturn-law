@@ -1,0 +1,243 @@
+openapi: 3.0.0
+
+info:
+  title: SaturnLaw API
+  description: Backend da Suíte de Aplicativos para Gestão Jurídica
+  version: 1.0.0
+  contact:
+    name: Gustavo Lopes
+    email: gusflopes86@gmail.com
+
+servers:
+  - url: https://api.saturnlaw.com.br/v1
+    description: Production servers
+  - url: http://localhost:3333
+    description: Development Server
+
+paths:
+  /users:
+    post:
+      summary: Create User
+      tags:
+        - USERS
+      security: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUser'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+tags:
+  - name: ANYONE
+    description: Routes without authentication
+  - name: USERS
+    description: Routes for authenticated users
+  - name: ADMIN
+    description: Routes for users with Admin privilegies
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Gustavo Lopes'
+        email:
+          type: string
+          example: 'gustavo@saturnlaw.com.br'
+        passsword:
+          type: string
+          example: 'pass123'
+    ResponseUser:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              example: '13c18c9e-3485-4528-a116-acd7b76a75ad'
+        - $ref: '#components/schemas/User'
+    Updateuser:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            oldPassword:
+              type: string
+              example: 'pass123'
+    Credentials:
+      type: object
+      properties:
+        email:
+          type: string
+          example: 'gustavo@saturnlaw.com.br'
+        passsword:
+          type: string
+          example: 'pass123'
+    SignIn:
+      type: object
+      properties:
+        user:
+          properties:
+            id:
+              type: string
+              example: '13c18c9e-3485-4528-a116-acd7b76a75ad'
+            name:
+              type: string
+              example: 'Gustavo Lopes'
+            email:
+              type: string
+              example: 'gustavo@saturnlaw.com.br'
+        token:
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTc1MDc4NDUyLCJleHAiOjE1NzU2ODMyNTJ9.oi2RiCP5sqKgP4C7hPSFLcMAPgRfuITH3hmfhN6Q_Qk'
+
+
+
+    Client:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: 'João da Silva'
+        cpfCnpj:
+          type: string
+          example: '123.456.789-01'
+        identidade:
+          type: string
+          example: '123.456 SSP/MS'
+        birthDate:
+          type: string
+          example: '15/09/1986'
+
+        contact:
+          properties:
+            name:
+              type: string
+            relationship:
+              type: string
+            email:
+              type: string
+            telephone:
+              type: array
+              items:
+                $ref: '#/components/schemas/Telephone'
+            address:
+              properties:
+                country:
+                  type: string
+                  example: 'BRA'
+                  description: Sigla do país (padrão ISO 3166-1 conf. http://bit.ly/1OgCkxd)
+                postalCode:
+                  type: string
+                  example: '79002-401'
+                street:
+                  type: string
+                  example: 'Rua Jose Antonio'
+                number:
+                  type: string
+                  example: '1248'
+                  description: S/N ou número
+                street2:
+                  type: string
+                  example: 'Sala 01'
+                  description: complemento
+                district:
+                  type: string
+                  example: 'Centro'
+                city:
+                  type: string
+                  example: 'Campo Grande'
+                state:
+                  type: string
+                  example: 'MS'
+
+        judicial:
+          properties:
+            maritalStatus:
+              type: string
+              example: 'casado'
+            occupation:
+              type: string
+              example: 'contador'
+            nationality:
+              type: string
+              example: 'brasileiro'
+        inss:
+          properties:
+            nit:
+              type: string
+              example: '123.456789-12'
+        tax:
+          properties:
+            inscMunicipal:
+              type: string
+            contribuinte:
+              type: string
+              enum:
+                - 'Isento'
+                - 'Contribuinte'
+                - 'Não Contribuinte'
+            inscEstadual:
+              type: string
+
+
+    ResponseClient:
+      allOf:
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              example: '3e5068bf-f2ca-4a76-bf19-603894194b26'
+        - $ref: '#/components/schemas/Client'
+    ArrayOfClients:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResponseTool'
+
+    Telephone:
+      type: object
+      required:
+        - ddd
+        - number
+      properties:
+        ddd:
+          type: string
+          example: '67'
+        number:
+          type: string
+          example: '3029-1934'
+        type:
+          type: string
+          enum:
+            - 'whatsapp'
+            - 'self'
+            - 'contact'
+          example: 'whatsapp'
+
+
+security:
+  - bearerAuth: []
+
+
+
