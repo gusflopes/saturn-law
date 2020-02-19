@@ -2,10 +2,12 @@ import * as Yup from 'yup';
 import Lawfirm from '../models/Lawfirm';
 import User from '../models/User';
 
-class LawfirmController {
+class LawfirmMembersController {
   async newUser(req, res) {
     const { userId, lawfirmId } = req.query;
     const { name, email, password } = req.body;
+
+    // name e email required... password pode ou não ter
 
     const isUserMember = await Lawfirm.findByPk(lawfirmId, {
       include: [
@@ -20,7 +22,7 @@ class LawfirmController {
     });
 
     if (isUserMember) {
-      return res.status(401).json(isUserMember);
+      return res.status(401).json({message: `User '${isUserMember.users[0].name}' is already member of '${isUserMember.name}'`});
     }
     const lawfirm = await Lawfirm.findByPk(lawfirmId);
     console.log('########## LAWFIRM #########');
@@ -31,65 +33,15 @@ class LawfirmController {
     });
     if (!userExists) {
       // resolver se password estiver vazio
-      const user = await User.create({ name, email, password });
+      const userPassword = password ? password : Math.random().toString(36).slice(-10);
+
+      const user = await User.create({ name, email, password: userPassword });
       const newUser = await lawfirm.addUser(user);
-      return res.status(201).json(newUser);
+      return res.status(201).json({message: `User ${name} created/added to ${lawfirm.name}`});
     }
 
     const newUser = await lawfirm.addUser(userExists);
     return res.status(201).json(newUser);
-  }
-
-  async store(req, res) {
-    const { userId, lawfirmId } = req.query;
-    const { name, email, password } = req.body;
-    // Essas informações vão vir do JWT Token;
-    console.log('userId: ', userId, 'lawfirmId: ', lawfirmId);
-    console.log(req.body);
-    const userIdAlreadyMember = await Lawfirm.findByPk(lawfirmId, {
-      include: [
-        { model: User, as: 'users', through: { where: { user_id: userId } } },
-      ],
-    });
-    console.log(userIdAlreadyMember);
-    const userisMember = await Lawfirm.findByPk(lawfirmId, {
-      include: [
-        {
-          model: User,
-          as: 'users',
-          attributes: ['id', 'name', 'email', 'password_hash'],
-          where: { email: email.toLowerCase(), name },
-          through: { attributes: [] },
-        },
-      ],
-    });
-    if (!userisMember) {
-      console.log('Need to create a new user');
-      const userExists = await User.findOrCreate({
-        where: { email },
-        defaults: { name, email, password },
-      });
-
-      console.log('user created:', userExists);
-
-      try {
-        userExists.setLawfirm(lawfirmId);
-      } catch (err) {
-        console.log('Failed to associate');
-        console.log(err);
-      }
-
-      return res.status(201).json({ message: 'New user will be created' });
-    }
-
-    return res.json(userisMember);
-
-    // Verificar se usuário já é membro
-
-    // Adicionar relação
-
-    // Responder mensagem
-    return res.status(200).json({ message: 'Route working' });
   }
 
   async listLawfirmMembers(req, res) {
@@ -138,4 +90,4 @@ class LawfirmController {
   }
 }
 
-export default new LawfirmController();
+export default new LawfirmMembersController();

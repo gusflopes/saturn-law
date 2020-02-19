@@ -57,6 +57,13 @@ class LawfirmController {
       const { userId } = req.query;
       const { name } = req.body;
       console.log('Create new Lawfirm');
+      // Transferir essa validação para middleware
+      if (!userId || !name) {
+        return res.status(401).json({message: 'Invalid parameters'})
+      }
+
+      // Criar validação do body
+
       const lawfirm = await Lawfirm.create({ name, owner_id: userId });
 
       console.log(lawfirm);
