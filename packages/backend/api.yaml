@@ -22,7 +22,6 @@ tags:
   - name: lawsuits
     description: Routes for users with Admin privilegies
 
-
 paths:
   /users:
     post:
@@ -36,13 +35,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseUser'
+                $ref: "#/components/schemas/ResponseUser"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
     put:
       summary: Update User
       tags:
@@ -51,11 +50,11 @@ paths:
         201:
           description: User updated
 
-  /{lawfirmId}/users/membership:
+  /lawfirms/{lawfirmId}/users/membership:
     post:
       summary: Add User to Lawfirm
       tags:
-       - users
+        - users
       responses:
         201:
           description: User added to lawfirm
@@ -74,7 +73,7 @@ paths:
         200:
           description: User's permissions updated
 
-  /{lawfirmId}/clients:
+  /lawfirms/{lawfirmId}/clients:
     post:
       summary: Create a new Client
       tags:
@@ -89,7 +88,7 @@ paths:
       responses:
         200:
           description: List of all clients
-  /{lawfirmId}/clients/{clientId}:
+  /lawfirms/{lawfirmId}/clients/{clientId}:
     get:
       summary: Client Details
       tags:
@@ -112,7 +111,7 @@ paths:
         200:
           description: OK
 
-  /{lawfirmId}/clients/keychain/{clientId}:
+  /lawfirms/{lawfirmId}/clients/keychain/{clientId}:
     post:
       summary: Store a new password
       tags:
@@ -142,7 +141,6 @@ paths:
         200:
           description: OK
 
-
 components:
   securitySchemes:
     bearerAuth:
@@ -153,19 +151,18 @@ components:
     UnauthorizedError:
       description: Access token is missing or invalid
   schemas:
-
     User:
       type: object
       properties:
         name:
           type: string
-          example: 'Gustavo Lopes'
+          example: "Gustavo Lopes"
         email:
           type: string
-          example: 'gustavo@saturnlaw.com.br'
+          example: "gustavo@saturnlaw.com.br"
         passsword:
           type: string
-          example: 'pass123'
+          example: "pass123"
 
     Client:
       type: object
@@ -174,49 +171,48 @@ components:
       properties:
         name:
           type: string
-          example: 'João da Silva'
+          example: "João da Silva"
         cpfCnpj:
           type: string
-          example: '123.456.789-01'
+          example: "123.456.789-01"
         identidade:
           type: string
-          example: '123.456 SSP/MS'
+          example: "123.456 SSP/MS"
         birthDate:
           type: string
-          example: '15/09/1986'
+          example: "15/09/1986"
         maritalStatus:
           type: string
-          example: 'casado'
+          example: "casado"
         occupation:
           type: string
-          example: 'contador'
+          example: "contador"
         nationality:
           type: string
-          example: 'brasileiro'
+          example: "brasileiro"
         nit:
           type: string
-          example: '123.456789-12'
+          example: "123.456789-12"
         email:
           type: string
         telephone:
           type: array
           items:
-            $ref: '#/components/schemas/Telephone'
+            $ref: "#/components/schemas/Telephone"
         address:
           type: array
           items:
-            $ref: '#/components/schemas/Address'
+            $ref: "#/components/schemas/Address"
         inscMunicipal:
           type: string
         contribuinte:
           type: string
           enum:
-            - 'Isento'
-            - 'Contribuinte'
-            - 'Não Contribuinte'
+            - "Isento"
+            - "Contribuinte"
+            - "Não Contribuinte"
         inscEstadual:
           type: string
-
 
     ResponseUser:
       allOf:
@@ -224,25 +220,25 @@ components:
           properties:
             id:
               type: string
-              example: '13c18c9e-3485-4528-a116-acd7b76a75ad'
-        - $ref: '#/components/schemas/User'
+              example: "13c18c9e-3485-4528-a116-acd7b76a75ad"
+        - $ref: "#/components/schemas/User"
     Updateuser:
       allOf:
-        - $ref: '#/components/schemas/User'
+        - $ref: "#/components/schemas/User"
         - type: object
           properties:
             oldPassword:
               type: string
-              example: 'pass123'
+              example: "pass123"
     Credentials:
       type: object
       properties:
         email:
           type: string
-          example: 'gustavo@saturnlaw.com.br'
+          example: "gustavo@saturnlaw.com.br"
         passsword:
           type: string
-          example: 'pass123'
+          example: "pass123"
     SignIn:
       type: object
       properties:
@@ -250,21 +246,16 @@ components:
           properties:
             id:
               type: string
-              example: '13c18c9e-3485-4528-a116-acd7b76a75ad'
+              example: "13c18c9e-3485-4528-a116-acd7b76a75ad"
             name:
               type: string
-              example: 'Gustavo Lopes'
+              example: "Gustavo Lopes"
             email:
               type: string
-              example: 'gustavo@saturnlaw.com.br'
+              example: "gustavo@saturnlaw.com.br"
         token:
           type: string
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTc1MDc4NDUyLCJleHAiOjE1NzU2ODMyNTJ9.oi2RiCP5sqKgP4C7hPSFLcMAPgRfuITH3hmfhN6Q_Qk'
-
-
-
-
-
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTc1MDc4NDUyLCJleHAiOjE1NzU2ODMyNTJ9.oi2RiCP5sqKgP4C7hPSFLcMAPgRfuITH3hmfhN6Q_Qk"
 
     ResponseClient:
       allOf:
@@ -274,12 +265,12 @@ components:
           properties:
             id:
               type: string
-              example: '3e5068bf-f2ca-4a76-bf19-603894194b26'
-        - $ref: '#/components/schemas/Client'
+              example: "3e5068bf-f2ca-4a76-bf19-603894194b26"
+        - $ref: "#/components/schemas/Client"
     ArrayOfClients:
       type: array
       items:
-        $ref: '#/components/schemas/Client'
+        $ref: "#/components/schemas/Client"
 
     Telephone:
       type: object
@@ -289,51 +280,47 @@ components:
       properties:
         ddd:
           type: string
-          example: '67'
+          example: "67"
         number:
           type: string
-          example: '3029-1934'
+          example: "3029-1934"
         type:
           type: string
           enum:
-            - 'whatsapp'
-            - 'self'
-            - 'contact'
-          example: 'whatsapp'
+            - "whatsapp"
+            - "self"
+            - "contact"
+          example: "whatsapp"
 
     Address:
       properties:
         country:
           type: string
-          example: 'BRA'
+          example: "BRA"
           description: Sigla do país (padrão ISO 3166-1 conf. http://bit.ly/1OgCkxd)
         postalCode:
           type: string
-          example: '79002-401'
+          example: "79002-401"
         street:
           type: string
-          example: 'Rua Jose Antonio'
+          example: "Rua Jose Antonio"
         number:
           type: string
-          example: '1248'
+          example: "1248"
           description: S/N ou número
         street2:
           type: string
-          example: 'Sala 01'
+          example: "Sala 01"
           description: complemento
         district:
           type: string
-          example: 'Centro'
+          example: "Centro"
         city:
           type: string
-          example: 'Campo Grande'
+          example: "Campo Grande"
         state:
           type: string
-          example: 'MS'
-
+          example: "MS"
 
 security:
   - bearerAuth: []
-
-
-
