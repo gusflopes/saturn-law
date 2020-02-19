@@ -10,6 +10,7 @@ routes.use('/test', require('./routes/test'));
 routes.use('/users', require('./routes/users'));
 routes.use('/lawfirms/members', require('./routes/lawfirmMembers.js'));
 routes.use('/lawfirms', require('./routes/lawfirms'));
+routes.use('/clients', require('./routes/clients'));
 
 // middlewares
 
