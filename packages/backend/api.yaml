@@ -14,16 +14,25 @@ servers:
   - url: http://localhost:3333
     description: Development Server
 
+tags:
+  - name: users
+    description: Routes related to Users
+  - name: clients
+    description: Routes for authenticated users
+  - name: lawsuits
+    description: Routes for users with Admin privilegies
+
+
 paths:
   /users:
     post:
       summary: Create User
       tags:
-        - USERS
+        - users
       security: []
       responses:
-        200:
-          description: OK
+        201:
+          description: User Created
           content:
             application/json:
               schema:
@@ -34,14 +43,105 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
+    put:
+      summary: Update User
+      tags:
+        - users
+      responses:
+        201:
+          description: User updated
 
-tags:
-  - name: ANYONE
-    description: Routes without authentication
-  - name: USERS
-    description: Routes for authenticated users
-  - name: ADMIN
-    description: Routes for users with Admin privilegies
+  /{lawfirmId}/users/membership:
+    post:
+      summary: Add User to Lawfirm
+      tags:
+       - users
+      responses:
+        201:
+          description: User added to lawfirm
+    delete:
+      summary: Remove User from Lawfirm
+      tags:
+        - users
+      responses:
+        200:
+          description: User removed from lawfirm
+    put:
+      summary: Update User's Permission
+      tags:
+        - users
+      responses:
+        200:
+          description: User's permissions updated
+
+  /{lawfirmId}/clients:
+    post:
+      summary: Create a new Client
+      tags:
+        - clients
+      responses:
+        201:
+          description: Client created
+    get:
+      summary: List all Clients
+      tags:
+        - clients
+      responses:
+        200:
+          description: List of all clients
+  /{lawfirmId}/clients/{clientId}:
+    get:
+      summary: Client Details
+      tags:
+        - clients
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update Client Details
+      tags:
+        - clients
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete Client
+      tags:
+        - clients
+      responses:
+        200:
+          description: OK
+
+  /{lawfirmId}/clients/keychain/{clientId}:
+    post:
+      summary: Store a new password
+      tags:
+        - clients
+      responses:
+        201:
+          description: Client created
+    get:
+      summary: List Client Password
+      tags:
+        - clients
+      responses:
+        200:
+          description: List of all clients
+    put:
+      summary: Update Client Details
+      tags:
+        - clients
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete Client
+      tags:
+        - clients
+      responses:
+        200:
+          description: OK
+
 
 components:
   securitySchemes:
@@ -53,6 +153,7 @@ components:
     UnauthorizedError:
       description: Access token is missing or invalid
   schemas:
+
     User:
       type: object
       properties:
@@ -65,6 +166,58 @@ components:
         passsword:
           type: string
           example: 'pass123'
+
+    Client:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: 'João da Silva'
+        cpfCnpj:
+          type: string
+          example: '123.456.789-01'
+        identidade:
+          type: string
+          example: '123.456 SSP/MS'
+        birthDate:
+          type: string
+          example: '15/09/1986'
+        maritalStatus:
+          type: string
+          example: 'casado'
+        occupation:
+          type: string
+          example: 'contador'
+        nationality:
+          type: string
+          example: 'brasileiro'
+        nit:
+          type: string
+          example: '123.456789-12'
+        email:
+          type: string
+        telephone:
+          type: array
+          items:
+            $ref: '#/components/schemas/Telephone'
+        address:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        inscMunicipal:
+          type: string
+        contribuinte:
+          type: string
+          enum:
+            - 'Isento'
+            - 'Contribuinte'
+            - 'Não Contribuinte'
+        inscEstadual:
+          type: string
+
+
     ResponseUser:
       allOf:
         - type: object
@@ -72,7 +225,7 @@ components:
             id:
               type: string
               example: '13c18c9e-3485-4528-a116-acd7b76a75ad'
-        - $ref: '#components/schemas/User'
+        - $ref: '#/components/schemas/User'
     Updateuser:
       allOf:
         - $ref: '#/components/schemas/User'
@@ -110,94 +263,7 @@ components:
 
 
 
-    Client:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          example: 'João da Silva'
-        cpfCnpj:
-          type: string
-          example: '123.456.789-01'
-        identidade:
-          type: string
-          example: '123.456 SSP/MS'
-        birthDate:
-          type: string
-          example: '15/09/1986'
 
-        contact:
-          properties:
-            name:
-              type: string
-            relationship:
-              type: string
-            email:
-              type: string
-            telephone:
-              type: array
-              items:
-                $ref: '#/components/schemas/Telephone'
-            address:
-              properties:
-                country:
-                  type: string
-                  example: 'BRA'
-                  description: Sigla do país (padrão ISO 3166-1 conf. http://bit.ly/1OgCkxd)
-                postalCode:
-                  type: string
-                  example: '79002-401'
-                street:
-                  type: string
-                  example: 'Rua Jose Antonio'
-                number:
-                  type: string
-                  example: '1248'
-                  description: S/N ou número
-                street2:
-                  type: string
-                  example: 'Sala 01'
-                  description: complemento
-                district:
-                  type: string
-                  example: 'Centro'
-                city:
-                  type: string
-                  example: 'Campo Grande'
-                state:
-                  type: string
-                  example: 'MS'
-
-        judicial:
-          properties:
-            maritalStatus:
-              type: string
-              example: 'casado'
-            occupation:
-              type: string
-              example: 'contador'
-            nationality:
-              type: string
-              example: 'brasileiro'
-        inss:
-          properties:
-            nit:
-              type: string
-              example: '123.456789-12'
-        tax:
-          properties:
-            inscMunicipal:
-              type: string
-            contribuinte:
-              type: string
-              enum:
-                - 'Isento'
-                - 'Contribuinte'
-                - 'Não Contribuinte'
-            inscEstadual:
-              type: string
 
 
     ResponseClient:
@@ -213,7 +279,7 @@ components:
     ArrayOfClients:
       type: array
       items:
-        $ref: '#/components/schemas/ResponseTool'
+        $ref: '#/components/schemas/Client'
 
     Telephone:
       type: object
@@ -234,6 +300,36 @@ components:
             - 'self'
             - 'contact'
           example: 'whatsapp'
+
+    Address:
+      properties:
+        country:
+          type: string
+          example: 'BRA'
+          description: Sigla do país (padrão ISO 3166-1 conf. http://bit.ly/1OgCkxd)
+        postalCode:
+          type: string
+          example: '79002-401'
+        street:
+          type: string
+          example: 'Rua Jose Antonio'
+        number:
+          type: string
+          example: '1248'
+          description: S/N ou número
+        street2:
+          type: string
+          example: 'Sala 01'
+          description: complemento
+        district:
+          type: string
+          example: 'Centro'
+        city:
+          type: string
+          example: 'Campo Grande'
+        state:
+          type: string
+          example: 'MS'
 
 
 security:
