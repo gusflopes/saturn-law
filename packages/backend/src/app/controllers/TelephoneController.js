@@ -27,17 +27,23 @@ class TelephoneController {
   }
 
   async show(req, res) {
-    const { lawfirmId } = req.query;
-    const { clientId } = req.params;
+    const { lawfirmId, userId } = req.query;
+    const { clientId, telephoneId } = req.params;
 
-    const client = await Client.findByPk(clientId, {
+    const telephone = await Client.findAll({
+      where: { lawfirm_id: lawfirmId, id: clientId },
+      attributes: ['id', 'lawfirm_id', 'name'],
       include: [
-        { model: Address, as: 'addresses' },
-        { model: Telephone, as: 'telephones' },
+        {
+          where: { id: telephoneId },
+          model: Telephone,
+          as: 'telephones',
+          attributes: ['id', 'ddd', 'number'],
+        },
       ],
     });
 
-    return res.status(200).json(client);
+    return res.status(200).json(telephone);
   }
 
   async store(req, res) {
