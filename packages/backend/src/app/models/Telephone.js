@@ -33,11 +33,15 @@ class Telephone extends Model {
 
   // static associate
   static associate(models) {
-    this.belongsToMany(models.Client, {
+    this.belongsTo(models.Client, { as: 'client', foreignKey: 'client_id' });
+
+    /*
+      this.belongsToMany(models.Client, {
       as: 'telephones',
       through: 'ClientTelephones',
       foreignKey: 'client_id',
     });
+    */
     // this.hasMany(models.Telephone, {as: 'telephones', foreignKey: 'client_id'});
     // this.hasMany(models.Address, {as: 'addresses', foreignKey: 'client_id'});
   }
