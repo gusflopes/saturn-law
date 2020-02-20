@@ -46,23 +46,62 @@ class TelephoneController {
     return res.status(200).json(telephone);
   }
 
-  async store(req, res) {
-    const { lawfirmId } = req.query;
+  async destroy(req, res) {
+    const { lawfirmId, userId } = req.query;
+    const { clientId, telephoneId } = req.params;
 
-    const newClient = { lawfirm_id: lawfirmId, ...req.body };
-    const client = await Client.create(newClient, {
+    const telephone = await Client.findAll({
+      where: { lawfirm_id: lawfirmId, id: clientId },
+      attributes: ['id', 'lawfirm_id', 'name'],
       include: [
         {
-          model: Address,
-          as: 'addresses',
-        },
-        {
+          where: { id: telephoneId },
           model: Telephone,
           as: 'telephones',
+          attributes: ['id', 'ddd', 'number'],
         },
       ],
     });
-    return res.status(201).json(client);
+    console.log(telephone);
+    if (telephone.length === 0) {
+      return res.status(401).json({message: 'Telephone not found.'})
+    }
+    try {
+      await Telephone.destroy({where: {
+        id: telephoneId
+      }});
+      return res.status(200).json({message: 'Telephone deleted.'});
+   } catch (err) {
+     return res.status(500).json({message: 'Error deleting Telephone.'})
+   }
+  }
+
+  async update(req,res) {
+    const { lawfirmId, userId } = req.query;
+    const { clientId, telephoneId } = req.params;
+    const {ddd, number, type} = req.body;
+
+    const telephone = await Telephone.findByPk(telephoneId);
+    if (!telephone) {
+      return res.status(401).json({message: 'Telephone not found.'})
+    }
+
+    const response = await telephone.update({ddd, number, type});
+
+    return res.status(200).json(response);
+  }
+
+  async store(req, res) {
+    const { lawfirmId, userId } = req.query;
+    const { clientId } = req.params;
+    const {ddd, number, type} = req.body;
+
+    // Criando telefone direto pois permissão para acessar rota
+    // daquele cliente deve ser verificada em um middleware anterior
+
+
+    const telephone = await Telephone.create({client_id: clientId, ddd, number, type});
+    return res.status(201).json(telephone);
   }
 }
 
