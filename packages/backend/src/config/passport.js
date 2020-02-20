@@ -1,4 +1,5 @@
 import User from '../app/models/User';
+import Lawfirm from '../app/models/Lawfirm';
 
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -22,6 +23,55 @@ passport.use(
 
         // If user doesn't exists, handle it
         if (!user) {
+          return done(null, false);
+        }
+
+        // Otherwise, return the user
+        done(null, user);
+      } catch (error) {
+        done(error, false);
+      }
+    }
+  )
+);
+
+// LOCAL STRATEGY
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+    },
+    async (email, password, done) => {
+      try {
+        // Find the user given the email
+        const user = await User.findOne({
+          where: { email },
+          include: [{ model: Lawfirm, as: 'lawfirms', attributes: ['id'] }],
+        });
+
+        const lawfirms = await Lawfirm.findAll({
+          include: [
+            { model: User, as: 'owner', attributes: ['name', 'email'] },
+            {
+              model: User,
+              as: 'users',
+              attributes: ['id', 'name', 'email'],
+              through: { attributes: [] },
+            },
+          ],
+        });
+
+        // If not, handle it
+        if (!user) {
+          return done(null, false);
+        }
+
+        // Check if the password is correct
+        const isMatch = await user.isValidPassword(password);
+
+        // If not, handle it
+        if (!isMatch) {
           return done(null, false);
         }
 
@@ -128,37 +178,3 @@ passport.use(
   )
 );
 */
-
-// LOCAL STRATEGY
-passport.use(
-  new LocalStrategy(
-    {
-      usernameField: 'email',
-      passwordField: 'password',
-    },
-    async (email, password, done) => {
-      try {
-        // Find the user given the email
-        const user = await User.findOne({ where: { email } });
-
-        // If not, handle it
-        if (!user) {
-          return done(null, false);
-        }
-
-        // Check if the password is correct
-        const isMatch = await user.isValidPassword(password);
-
-        // If not, handle it
-        if (!isMatch) {
-          return done(null, false);
-        }
-
-        // Otherwise, return the user
-        done(null, user);
-      } catch (error) {
-        done(error, false);
-      }
-    }
-  )
-);
