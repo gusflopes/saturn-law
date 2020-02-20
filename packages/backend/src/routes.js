@@ -1,16 +1,13 @@
 import { Router } from 'express';
 
-// import UserController from './app/controllers/UserController';
-// import LawfirmController from './app/controllers/LawfirmController';
-
 const routes = new Router();
 
 routes.get('/', (req, res) => res.json({ message: 'Server up and running!' }));
 routes.use('/test', require('./routes/test'));
-routes.use('/users', require('./routes/users'));
+routes.use('/users', require('./routes/users.routes'));
 routes.use('/lawfirms/members', require('./routes/lawfirmMembers.js'));
-routes.use('/lawfirms', require('./routes/lawfirms'));
-routes.use('/clients', require('./routes/clients'));
+routes.use('/lawfirms', require('./routes/lawfirms.routes'));
+routes.use('/clients', require('./routes/clients.routes'));
 
 // middlewares
 
