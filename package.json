@@ -6,7 +6,11 @@
   "author": "gusflopes <gusflopes86@gmail.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "backend", "frontend/*", "shared"
-  ]
+  "workspaces": {
+    "packages": [
+      "packages/backend",
+      "packages/frontend/*",
+      "packages/shared/*"
+    ]
+  }
 }

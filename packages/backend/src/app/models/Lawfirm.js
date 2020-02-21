@@ -38,6 +38,7 @@ class Lawfirm extends Model {
       through: 'LawfirmUsers',
       foreignKey: 'lawfirm_id',
     });
+    this.hasMany(models.Client, { foreignKey: 'lawfirm_id', as: 'lawfirm' });
   }
 
   // methods

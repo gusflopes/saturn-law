@@ -17,13 +17,29 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      lawyer_id: {
-        foreignKey: true,
-        type: Sequelize.UUID,
+      email: Sequelize.STRING,
+      cpf_cnpj: Sequelize.STRING,
+      birth_date: Sequelize.DATEONLY,
+      // Lawsuit Properties
+      identidade: Sequelize.STRING,
+      nit: Sequelize.STRING,
+      marital_status: Sequelize.STRING,
+      occupation: Sequelize.STRING,
+      nationality: Sequelize.STRING,
+      // Taxpayer Properties
+      contribuinte: {
+        type: Sequelize.ENUM('Isento', 'Contribuinte', 'Não Contribuinte'),
+      },
+      insc_municipal: Sequelize.STRING,
+      insc_estadual: Sequelize.STRING,
+
+      created_at: {
+        type: Sequelize.DATE,
         allowNull: false,
-        references: { model: 'users', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
     });
   },
