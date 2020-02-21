@@ -9,7 +9,6 @@ import Address from '../app/models/Address';
 import databaseConfig from '../config/database';
 
 const models = [User, Lawfirm, Client, Telephone, Address];
-
 class Database {
   constructor() {
     this.init();

@@ -26,10 +26,10 @@ class UserController {
     }
 
     const userExists = await User.findOne({ where: { email: req.body.email } });
+
     if (userExists) {
       return res.status(400).json({ error: 'User already exists.' });
     }
-    console.log('passou em tudo.');
     // Create a user with the information provided on req.body, and give back just  a few columns
     const { id, name, email } = await User.create(req.body);
 
