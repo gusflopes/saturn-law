@@ -6,6 +6,10 @@
   "author": "gusflopes <gusflopes86@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "@backend:dev": "yarn workspace @saturnlaw/backend dev:debug",
+    "@backend:test": "yarn workspace @saturnlaw/backend test"
+  },
   "workspaces": {
     "packages": [
       "packages/backend",
