@@ -14,6 +14,19 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
+  settings: {
+    'import/resolver': {
+      /*
+      'babel-plugin-root-import': {
+        rootPathSuffix: 'src',
+      },
+      */
+      alias: {
+        map: [['~', './src']],
+        extensions: ['.ts', '.js', '.jsx', '.json'],
+      },
+    },
+  },
   rules: {
     'prettier/prettier': 'error',
     'class-methods-use-this': 'off',

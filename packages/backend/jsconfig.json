@@ -3,7 +3,7 @@
     "include": ["jest"]
   },
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "paths": {
       "~/*": ["*"]
     }
