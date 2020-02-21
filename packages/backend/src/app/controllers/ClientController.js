@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
-import Client from '../models/Client';
-import Lawfirm from '../models/Lawfirm';
-import Address from '../models/Address';
-import Telephone from '../models/Telephone';
+import Client from '~/app/models/Client';
+import Lawfirm from '~/app/models/Lawfirm';
+import Address from '~/app/models/Address';
+import Telephone from '~/app/models/Telephone';
 
 class ClientController {
   async index(req, res) {
