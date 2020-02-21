@@ -272,6 +272,36 @@ components:
       items:
         $ref: "#/components/schemas/Client"
 
+    KeyChain:
+      type: object
+      required:
+        - system
+        - username
+        - password
+      properties:
+        id:
+          type: string
+          example: 'uuid-v4'
+        system:
+          type: string
+          enum:
+            - eCac
+            - pgfn
+            - inss
+            - pmcg
+            - other
+          example: 'eCac'
+        username:
+          type: string
+          example: '12345678901'
+        password:
+          type: string
+          example: 'pass123'
+        accessCode:
+          type: string
+          example: ''
+
+
     Telephone:
       type: object
       required:
