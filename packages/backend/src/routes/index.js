@@ -1,41 +1,33 @@
 import { Router } from 'express';
 import path from 'path';
 import fs from 'fs';
-import users from './users.routes';
-import lawfirms from './lawfirms.routes';
-import lawfirmMembers from './lawfirmMembers.routes';
-import clients from './clients.routes';
 import test from './developer.routes';
-import app from '../app';
 
 const routes = Router();
 
 routes.get('/', (req, res) => res.json({ message: 'Server up and running!' }));
-routes.use('/users', require('./users.routes'));
+routes.use(test); // Just for testing. Delete later;
 
-// routes.use('/users', users => {return require('./users.routes')});
-routes.use('/lawfirms', lawfirms);
-routes.use('/lawfirms/members', lawfirmMembers);
-routes.use('/clients', clients);
-routes.use(test);
+/**
+ * Routes automatically imported from files within ./routes
+ * To create a new route, just add a new file like the template
+ */
 
-async function printFunc() {
+async function importRoutes() {
   const currentPath = path.resolve(__dirname);
   const files = await fs.promises.readdir(currentPath);
-  console.log('files', files);
   files.map(file => {
     //   if (path.extname(file).toLowerCase() === '.js' && file !== 'index.js') {
     if (
       path.extname(file).toLocaleLowerCase() === '.js' &&
       file !== 'index.js'
     ) {
-      console.log(file);
       routes.use('/v1', require(`./${file}`));
     }
   });
+  console.log('[saturnlaw] routes imported an ready for requests');
 }
 
-printFunc().catch(console.error);
-// routes.use('/map', require(`./${filesList[4]}`));
+importRoutes().catch(console.error);
 
 export default routes;
