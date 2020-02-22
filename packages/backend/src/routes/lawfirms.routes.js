@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import LawfirmController from '../app/controllers/LawfirmController';
 
+const routePath = '/lawfirms';
+
 module.exports = Router({ mergeParams: true })
-  .get('/', LawfirmController.index)
-  .get('/mine', LawfirmController.myLawfirms)
-  .post('/', LawfirmController.store);
+  .get(`${routePath}`, LawfirmController.index)
+  .get(`${routePath}/mine`, LawfirmController.myLawfirms)
+  .post(`${routePath}`, LawfirmController.store);

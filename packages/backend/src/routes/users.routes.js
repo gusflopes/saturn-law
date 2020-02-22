@@ -1,8 +1,8 @@
 import { Router } from 'express';
-// Want to use this (working on Jest; Not Working with Sucrase)
-import UserController from '~/app/controllers/UserController';
-// import UserController from '../app/controllers/UserController';
+import UserController from '../app/controllers/UserController';
+// import middlewares and use it before the controller
+const routePath = '/users';
 
 module.exports = Router({ mergeParams: true })
-  .get('/', UserController.index)
-  .post('/', UserController.store);
+  .get(`${routePath}`, UserController.index)
+  .post(`${routePath}`, UserController.store);

@@ -1,9 +1,8 @@
 import { Router } from 'express';
 import LawfirmMemberController from '../app/controllers/LawfirmMemberController';
 
-const routes = Router();
+const routePath = '/lawfirms/members';
 
-routes.get('/', LawfirmMemberController.listLawfirmMembers);
-routes.post('/', LawfirmMemberController.newUser);
-
-export default routes;
+module.exports = Router({ mergeParams: true })
+  .get(`${routePath}`, LawfirmMemberController.listLawfirmMembers)
+  .post(`${routePath}`, LawfirmMemberController.newUser);
