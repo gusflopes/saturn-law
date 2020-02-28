@@ -23,7 +23,7 @@ describe('User Controller', () => {
     const user = await factory.attrs('User');
 
     const response = await request(app)
-      .post('/users')
+      .post('/v1/users')
       .send(user);
 
     expect(response.body).toHaveProperty('id');
@@ -32,9 +32,9 @@ describe('User Controller', () => {
   it('should not be able to register with duplicated email', async () => {
     const user = await factory.attrs('User');
 
-    await request(app).post('/users', user);
+    await request(app).post('/v1/users', user);
 
-    const response = await request(app).post('/users', user);
+    const response = await request(app).post('/v1/users', user);
 
     expect(response.status).toBe(400);
   });
