@@ -54,7 +54,7 @@ class LawfirmController {
 
   async store(req, res) {
     try {
-      const { userId } = req.query;
+      const userId = req.user.id;
       const { name } = req.body;
       console.log('Create new Lawfirm');
       // Transferir essa validação para middleware

@@ -4,6 +4,8 @@ import passport from 'passport';
 import { validateBody, schemas } from '../helpers/routeHelpers';
 
 import UserController from '../app/controllers/users';
+import OauthController from '../app/controllers/OauthController';
+
 
 const passportSignIn = passport.authenticate('local', { session: false });
 
@@ -25,4 +27,6 @@ module.exports = Router({ mergeParams: true })
     validateBody(schemas.authSchema),
     passportSignIn,
     UserController.signIn
-  );
+  )
+  .post('/passport/oauth/google', OauthController.createUserProfile)
+  .get('/passport/oauth/google', OauthController.findUserProfile);

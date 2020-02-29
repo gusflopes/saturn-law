@@ -15,7 +15,7 @@
     "start": "node dist/server.js",
     "test:setup": "NODE_ENV=test sequelize db:create test",
     "pretest": "NODE_ENV=test sequelize db:migrate",
-    "test": "NODE_ENV=test jest --runInBand --watchAll",
+    "test": "NODE_ENV=test jest --runInBand --watchAll --verbose",
     "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
   },
   "dependencies": {
