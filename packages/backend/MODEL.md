@@ -1,11 +1,13 @@
 # Model: Client
+
 **Funções disponíveis na 'instância' do Client**
 
 ## Model: Telephone
+
+createTelephone()
 addTelephone()
 addTelephones()
 countTelephones()
-createTelephone()
 getTelephones()
 hasTelephone()
 hasTelephones()
@@ -14,10 +16,11 @@ removeTelephones()
 setTelephones()
 
 ## Model: Address
+
+createAddress()
 addAddress()
 addAddresses()
 countAddresses()
-createAddress()
 getAddresses()
 hasAddress()
 hasAddresses()
@@ -26,6 +29,7 @@ removeAddresses()
 setAddresses()
 
 ## Model: Lawfirm
+
 createLawfirm()
 getLawfirm()
 setLawfirm()

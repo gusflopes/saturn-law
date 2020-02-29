@@ -4,7 +4,7 @@ import Lawfirm from '../app/models/Lawfirm';
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
-// const GooglePlusTokenStrategy = require('passport-google-plus-token');
+const GooglePlusTokenStrategy = require('passport-google-plus-token');
 // const FacebookTokenStrategy = require('passport-facebook-token');
 
 const LocalStrategy = require('passport-local').Strategy;
@@ -130,7 +130,6 @@ passport.use(
     }
   )
 );
-*/
 
 /*
 // FACEBOOK STRATEGY

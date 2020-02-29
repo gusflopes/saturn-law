@@ -1,15 +1,77 @@
 import * as Yup from 'yup';
 import User from '../models/User';
+import Profile from '../models/Profile';
 
 class UserController {
   async index(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({
+        include: [
+          {
+            model: Profile,
+            as: 'profiles',
+          },
+        ],
+      });
       return res.status(200).json(users);
     } catch (err) {
       console.log(err);
       return res.status(501).json({ message: 'Erro na requisição.' });
     }
+  }
+
+  async findUserProfile(req, res) {
+    const email = 'gustavo@saturnlaw.com.br';
+    const social_media = 'facebook';
+
+    const findUser = await Profile.findUserProfile(email, social_media);
+
+    if (!findUser.found) {
+      return res.status(401).json({ error: 'User not found.' });
+    }
+    return res.status(200).json(findUser.user);
+  }
+
+  async createUserProfile(req, res) {
+    const email = 'gustavo@saturnlaw.com.br';
+    const newProfile = {
+      social_media: 'twitter',
+      social_id: '03724b51-e28b-4989-a89d-7653b5a8ae90',
+      email: 'gustavo@saturnlaw.com.br',
+      name: 'Gustavo Lopes',
+    };
+
+    const user = await User.findOne({
+      where: { email },
+      include: [{ model: Profile, as: 'profiles' }],
+    });
+    console.log(user.profiles);
+
+    const profileExists = await user.profiles
+      .map(e => {
+        return e.social_media;
+      })
+      .indexOf(newProfile.social_media);
+    console.log(profileExists);
+
+    if (profileExists < 0) {
+      // Ainda não existe o Profile, posso criar um novo!
+      try {
+        const currentProfile = await user.createProfile(newProfile);
+        return res
+          .status(201)
+          .json({ message: 'New profile created', profile: currentProfile });
+      } catch (err) {
+        return res.status(401).json({
+          error: "You can't create an account with that Social media.",
+        });
+      }
+    }
+    const profileList = await user.getProfiles();
+    return res.status(401).json({
+      error: 'Profile already exists. Try to login.',
+      profiles: profileList,
+    });
   }
 
   async store(req, res) {
