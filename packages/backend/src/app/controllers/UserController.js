@@ -1,16 +1,25 @@
 import * as Yup from 'yup';
 import User from '../models/User';
+import Profile from '../models/Profile';
 
 class UserController {
   async index(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({
+        include: [
+          {
+            model: Profile,
+            as: 'profiles',
+          },
+        ],
+      });
       return res.status(200).json(users);
     } catch (err) {
       console.log(err);
       return res.status(501).json({ message: 'Erro na requisição.' });
     }
   }
+
 
   async store(req, res) {
     const schema = Yup.object().shape({

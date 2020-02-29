@@ -5,10 +5,11 @@ import Lawfirm from '../app/models/Lawfirm';
 import Client from '../app/models/Client';
 import Telephone from '../app/models/Telephone';
 import Address from '../app/models/Address';
+import Profile from '../app/models/Profile';
 
 import databaseConfig from '../config/database';
 
-const models = [User, Lawfirm, Client, Telephone, Address];
+const models = [User, Profile, Lawfirm, Client, Telephone, Address];
 class Database {
   constructor() {
     this.init();

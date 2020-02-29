@@ -5,4 +5,4 @@ import UserController from '../app/controllers/UserController';
 
 module.exports = Router({ mergeParams: true })
   .get('/users', UserController.index)
-  .post('/users', UserController.store);
+  .post('/users', UserController.store)

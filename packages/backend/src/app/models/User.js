@@ -39,6 +39,10 @@ class User extends Model {
       through: 'LawfirmUsers',
       foreignKey: 'user_id',
     });
+    this.hasMany(models.Profile, {
+      as: 'profiles',
+      foreignKey: 'user_id',
+    });
   }
 
   // Methods
