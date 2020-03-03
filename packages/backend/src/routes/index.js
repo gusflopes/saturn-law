@@ -34,7 +34,12 @@ routes.use('/v2/private', (req, res) => {
 // Authorization needed
 // routes.use(Authorization);
 routes.get('/v2/lawfirm/:lawfirmId', Authorization, (req, res) => {
-  return res.status(200).json({message: 'This is an Authorized Route', params_lawfirmId: req.params.lawfirmId, user: req.user, lawfirm: req.lawfirm})
+  return res.status(200).json({
+    message: 'This is an Authorized Route',
+    params_lawfirmId: req.params.lawfirmId,
+    user: req.user,
+    lawfirm: req.lawfirm,
+  });
 });
 routes.use('/v1', clients);
 
