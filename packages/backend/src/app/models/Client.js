@@ -15,7 +15,7 @@ class Client extends Model {
         cpfCnpj: Sequelize.STRING,
         birthDate: Sequelize.DATEONLY,
         // Lawsuit Properties
-        identidade: Sequelize.STRING,
+        identity: Sequelize.STRING,
         nit: Sequelize.STRING,
         maritalStatus: Sequelize.STRING,
         occupation: Sequelize.STRING,

@@ -21,7 +21,7 @@ module.exports = {
       cpf_cnpj: Sequelize.STRING,
       birth_date: Sequelize.DATEONLY,
       // Lawsuit Properties
-      identidade: Sequelize.STRING,
+      identity: Sequelize.STRING,
       nit: Sequelize.STRING,
       marital_status: Sequelize.STRING,
       occupation: Sequelize.STRING,
